@@ -1,0 +1,95 @@
+{
+  "modele": "jev-1.14.0",
+  "redige_le": "2026-10-25, avant tout appel au modele",
+  "seuils": {
+    "oui": 0.7,
+    "non": 0.3,
+    "entre_les_deux": "non tranche, relecture humaine"
+  },
+  "contexte_state": {
+    "about": "Posts published on X (Twitter) by French news outlets, journalists and activist accounts on two Saturdays in France.",
+    "mobilisation_days": "On Saturday 17 October 2026 and Saturday 24 October 2026, nationwide street protests took place across France against the cost of living, led by high-school students, students, unions and Gilets jaunes. The 17 October day saw riots, looting and fires (Paris, Lyon, Marseille, Limoges). On 24 October many cities banned protests; the Paris march went from Porte d'Italie.",
+    "other_events_same_days": "Same weekend, unrelated to the mobilisation: on 23 October a racist terrorist shooting in Trappes and La Verriere (suspect Kevin T.); on 24 October the Rassemblement national (RN) party congress in Orleans, with a separate counter-protest against the RN in Orleans."
+  },
+  "questions": {
+    "rue": {
+      "type": "noul",
+      "instructions": {
+        "question": "Does `post` report something that happened in the streets during the nationwide protest day: marches, crowds, blockades, police charges or tear gas, injuries, arrests, looting or damage linked to the protests?",
+        "counts": "a march or crowd figure; police using tear gas on protesters; a shop looted on the margins of the protests; a protester injured by a grenade; a town hall set on fire after the march",
+        "does_not_count": "the Orleans counter-protest against the RN congress; the Trappes shooting; a politician's statement with no description of events"
+      },
+      "criteria": {
+        "true": "the post describes events in the streets linked to the protest day",
+        "false": "the post is about something else, such as politics in general, sport, culture or another news story"
+      }
+    },
+    "reaction": {
+      "type": "noul",
+      "instructions": {
+        "question": "Does `post` report a statement, decision or reaction by a politician, official, police union or commentator about the nationwide protest day?",
+        "counts": "the interior minister giving an arrest count; a mayor condemning the looting; Melenchon praising the marches; a court lifting a protest ban; the government asking telecom operators to prepare to cut social networks",
+        "does_not_count": "reactions to the Trappes shooting; statements at the RN congress about the RN itself"
+      },
+      "criteria": {
+        "true": "a reaction or decision about the protest day is reported",
+        "false": "no reaction about the protest day, for example a reaction to another event"
+      }
+    },
+    "orleans_rn": {
+      "type": "noul",
+      "instructions": "Is `post` about the Rassemblement national congress in Orleans or the counter-protest against it?",
+      "criteria": {
+        "true": "the RN congress or the Orleans anti-RN protest is the subject",
+        "false": "the post is about another place or event"
+      }
+    },
+    "trappes": {
+      "type": "noul",
+      "instructions": "Is `post` about the racist shooting in Trappes and La Verriere, its victims, suspect or aftermath?",
+      "criteria": {
+        "true": "the Trappes shooting is the subject",
+        "false": "the post is about another event"
+      }
+    },
+    "autopromo": {
+      "type": "noul",
+      "instructions": "Is `post` the account talking about itself: asking to turn on notifications, announcing a new or backup account, its own suspension, a buyout offer, or asking followers to send videos?",
+      "criteria": {
+        "true": "the account promotes or talks about itself",
+        "false": "the post reports news about the world"
+      }
+    },
+    "violence_policiere": {
+      "type": "noul",
+      "instructions": "Does `post` show or report police force used against protesters: charges, batons, tear gas, grenades, injuries caused by the police?",
+      "criteria": {
+        "true": "police force against protesters is reported",
+        "false": "no police force against protesters is reported, for example a peaceful march or looting"
+      }
+    },
+    "pillage_degats": {
+      "type": "noul",
+      "instructions": "Does `post` report looting, vandalism, fires or attacks on buildings or on the police by people at the protests?",
+      "criteria": {
+        "true": "looting, damage or attacks by protesters or rioters are reported",
+        "false": "no such damage is reported, for example a calm march or a police charge"
+      }
+    },
+    "ton": {
+      "type": "choice",
+      "instructions": "How does `post` present the protest movement?",
+      "criteria": {
+        "favorable": "sympathetic to the protesters: celebrates turnout, denounces repression, relays their demands",
+        "hostile": "unfavourable to the protesters: stresses chaos, rioters, looting or the far left as the main story",
+        "neutre": "factual reporting with no clear sympathy or hostility"
+      }
+    }
+  },
+  "table_de_decision": {
+    "post_manif": "(rue >= 0.7 OU reaction >= 0.7) ET trappes < 0.3 ET autopromo < 0.3 ET (orleans_rn < 0.3 OU INCLURE_ORLEANS)",
+    "post_autre": "rue < 0.3 ET reaction < 0.3, OU trappes >= 0.7, OU autopromo >= 0.7",
+    "non_tranche": "tout le reste : relecture",
+    "INCLURE_ORLEANS": "faux : posts sur le congres du RN a Orleans et la contre-manifestation classes autre"
+  }
+}
